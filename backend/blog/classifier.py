@@ -1,33 +1,16 @@
-import requests
+# posts/classifier.py
 
-API_URL = "https://moderateapi.com/api/v1/moderate"
-API_KEY = "mk_bYYSAm67H2c6MlgAvg8IM0u1BMm426JwVFSsR37eKa4RF2LLUzsrG8dgaaKbmHtR"
+from typing import Literal
 
-def classify_comment(text: str) -> str:
+def classify_comment(text: str) -> Literal["safe", "needs_review"]:
     """
-    Classifies a comment as "safe" or "needs_review" using the moderation API.
-    Returns:
-        - "safe" if the API does not flag the content
-        - "needs_review" if the API flags the content
+    Simple rule-based comment classifier.
+    Returns 'needs_review' if banned keywords are detected, otherwise 'safe'.
     """
-    try:
-        response = requests.post(
-            API_URL,
-            headers={"X-API-Key": API_KEY, "Content-Type": "application/json"},
-            json={"text": text},
-            timeout=5
-        )
-        response.raise_for_status()
-        data = response.json()
+    banned_keywords = {"spam", "hate", "offensive", "abuse", "violence"}
+    text_lower = text.lower()
 
-        # Assuming API returns something like {"flagged": true/false} or {"result":"needs_review"/"safe"}
-        # Adjust based on actual API response structure
-        print(data)
-        if data.get("flagged") is True or data.get("result") == "needs_review":
-            return "needs_review"
-        return "safe"
-
-    except requests.RequestException as e:
-        # On error, consider text safe (or optionally flag it for manual review)
-        print(f"Moderation API error: {e}")
+    if any(word in text_lower for word in banned_keywords):
         return "needs_review"
+    
+    return "safe"
