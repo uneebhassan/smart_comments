@@ -41,12 +41,12 @@ A social-media-style blog platform with **AI-powered comment moderation**. Comme
 
 ## 🤖 AI Integration Approach
 
-* **Moderation API:** External service used to classify comment text
+* **Rule-based Classifier:** Each new comment is classified as `safe` or `needs_review` based on detecting banned keywords (`spam`, `hate`, `offensive`, etc.).
 * **Flow:**
 
   1. User submits comment via frontend
-  2. Backend calls the moderation API
-  3. Backend sets `flagged=True` if API returns `needs_review`
+  2. Backend checks comment using the rule-based classifier
+  3. Backend sets `flagged=True` if classified as `needs_review`
   4. Frontend highlights flagged comments and shows them in moderator view
 * **Why Backend Integration:** Centralized moderation ensures consistency and security; frontend only consumes the `flagged` field
 
@@ -79,7 +79,6 @@ A social-media-style blog platform with **AI-powered comment moderation**. Comme
   * Approve/delete flagged comments
   * Batch moderation API calls for high traffic
   * Analytics dashboard for moderators
-
 * **Frontend:**
 
   * Real-time comment updates with WebSockets
@@ -94,7 +93,7 @@ A social-media-style blog platform with **AI-powered comment moderation**. Comme
 
 ```
 smart_comments/
-├── backend/   # Django REST API, models, serializers, views
+├── backend/   # Django REST API, models, serializers, views, classifier.py
 ├── frontend/  # React + TypeScript, CSS Modules
 └── README.md  # This file
 ```
@@ -122,7 +121,7 @@ python manage.py runserver
 
 * Open [http://127.0.0.1:8000/admin/](http://127.0.0.1:8000/admin/) to log in with your superuser credentials.
 * From the **admin panel**, go to **Posts** and click **Add Post** to create a new blog post.
-* You can also manage comments directly from the admin interface.
+* Comments can also be managed directly via admin or submitted through the API; new comments will automatically be classified using the **rule-based classifier**.
 
 ### Frontend
 
@@ -137,4 +136,46 @@ npm start
 
 ---
 
-This README documents the **architecture, AI integration, scaling, testing, monitoring, and potential improvements** for the Smart Comments blog platform.
+## 🛠 CI/CD Integration (Bonus)
+
+* **GitHub Actions** can be used to automate testing and deployment:
+
+  * Run **backend tests** using Django test suite
+  * Run **frontend tests** using Jest and React Testing Library
+  * Deploy frontend to **Vercel / Netlify** and backend to **Heroku / AWS / Render**
+
+Example `.github/workflows/ci-cd.yml` snippet:
+
+```yaml
+name: CI/CD Pipeline
+
+on: [push, pull_request]
+
+jobs:
+  backend-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+      - run: pip install -r backend/requirements.txt
+      - run: python backend/manage.py test
+
+  frontend-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+      - run: cd frontend && npm install && npm test
+```
+
+* You can also add **automatic deployments** on merge to `main` or `production` branch.
+
+---
+
+This README documents the **architecture, AI integration (rule-based), scaling, testing, monitoring, potential improvements, and CI/CD workflow** for the Smart Comments blog platform.
