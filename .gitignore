@@ -1,32 +1,68 @@
-# Python
-*.pyc
-*.pyo
-*.pyd
-__pycache__/
-*.so
-*.egg
-*.egg-info/
-*.log
+# =====================
+# Python / Django
+# =====================
 
-# Environment
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environments
 venv/
 env/
 ENV/
 .venv/
 .env
 
-# Django
+# Django database
 *.sqlite3
-db.sqlite3
+
+# Django media & static
 media/
 staticfiles/
+
+# Logs
+*.log
+
+# Local settings
 local_settings.py
 
-# IDEs and editors
+# =====================
+# Node / React
+# =====================
+
+# Dependencies
+node_modules/
+.pnp/
+.pnp.js
+
+# Production
+build/
+
+# Testing
+coverage/
+
+# Env files
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# =====================
+# IDEs / OS
+# =====================
+
+# VSCode
 .vscode/
+
+# JetBrains
 .idea/
-*.sublime-project
-*.sublime-workspace
 
 # macOS
 .DS_Store
@@ -34,28 +70,3 @@ local_settings.py
 # Windows
 Thumbs.db
 ehthumbs.db
-
-
-# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
-
-# dependencies
-/node_modules
-/.pnp
-.pnp.js
-
-# testing
-/coverage
-
-# production
-/build
-
-# misc
-.DS_Store
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
-
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
