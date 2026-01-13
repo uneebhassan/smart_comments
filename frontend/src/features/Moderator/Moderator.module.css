@@ -1,0 +1,12 @@
+.postContainer {
+  margin-bottom: 24px;
+}
+
+.flaggedComment {
+  background-color: #ffcccc;
+  padding: 8px;
+  margin-bottom: 4px;
+  border-radius: 6px;
+  font-weight: bold;
+  color: #a10000;
+}
